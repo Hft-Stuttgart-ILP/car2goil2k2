@@ -1,5 +1,9 @@
 package c2G.mobile.api.objekts;
 
+/**
+ * @author brought to you by 1st
+ *
+ */
 public class Coordinate {
 
 	double latitude;
@@ -34,6 +38,12 @@ public class Coordinate {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+	
+	@Override
+	public String toString() {
+		String result = "Latitude: " + this.latitude + " | Longitude: " + this.longitude;
+		return result;
 	}
 	
 }

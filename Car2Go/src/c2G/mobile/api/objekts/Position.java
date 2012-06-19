@@ -1,5 +1,9 @@
 package c2G.mobile.api.objekts;
 
+/**
+ * @author brought to you by 1st
+ *
+ */
 public class Position extends Coordinate{
 	
 	String adress;

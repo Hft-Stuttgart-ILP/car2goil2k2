@@ -10,8 +10,13 @@ import c2G.mobile.api.objekts.Location;
 import c2G.mobile.api.objekts.ParkingSpot;
 import c2G.mobile.api.objekts.Vehicle;
 
+/**
+ * @author brought to you by 1st
+ *
+ */
 public interface EndpointCommunication {
 	
+	//URL format Strings
 	static final String GETALLPARKINGSPOTS = "http://www.car2go.com/api/v2.1/parkingspots?loc=%s&oauth_consumer_key=%s&format=json";
 	static final String GETALLLOCATIONS = "http://www.car2go.com/api/v2.1/locations?oauth_consumer_key=%s&format=json";
 	static final String GETALLGASSTATIONS = "http://www.car2go.com/api/v2.1/gasstations?loc=%S&oauth_consumer_key=%s&format=json";
@@ -21,14 +26,36 @@ public interface EndpointCommunication {
 	static final String GETBOOKING = "https://www.car2go.com/api/v2.1/booking?loc=%s&format=json";
 	static final String CREATEBOOKING = "https://www.car2go.com/api/v2.1/bookings?loc=%s&vin=%s&account=%s&format=json";
 	static final String CANCELBOOKING = "https://www.car2go.com/api/v2.1/booking/%s&format=json";
-
-
-
-
 	
-	/**
-	 * Provides a list of car2go parking spots for a specific location like Ulm or Austin.
+	//JSON Keywords
+	static final String PLACEMARKS = "placemarks";
+	static final String COORDINATES = "coordinates";
+	static final String ADRESS = "address";
+	static final String VIN = "vin";
+	static final String NAME = "name";
+	static final String EXTERIOR = "exterior";
+	static final String INTERIOR = "interior";
+	static final String FUEL = "fuel";
+	static final String ENGINE_TYPE = "engineType";
+	static final String TOTAL_CAPACITY = "totalCapacity";
+	static final String USED_CAPACITY = "usedCapacity";
+	static final String COUNTRY_CODE = "countryCode";
+	static final String DEFAULT_LANGUAGE = "defaultLanguage";
+	static final String CHARGING_POLE = "chargingPole";
+	static final String LOCATION_ID = "locationId";
+	static final String LOCATION = "location";
+	static final String LOCATION_NAME = "locationName";
+	static final String MAPS_SECTION = "mapSection";
+	static final String CENTER = "center";
+	static final String LOWER_RIGHT = "lowerRight";
+	static final String UPPER_LEFT = "upperLeft";
+	static final String TIMEZONE = "timezone";
+	static final String LATITUDE = "latitude";
+	static final String LONGITUDE = "longitude";
+	
+	/**Provides a list of car2go parking spots for a specific location like Ulm or Austin.
 	 * A OAuth Consumer Key is required.
+	 * http Request Type: public
 	 * Can be provided as KML. (NOT YET IMPLEMENTED)
 	 * @param loc - Location e.g. ulm
 	 * @param oauth_consumer_key - valid OAuth Consumer Key
@@ -37,9 +64,7 @@ public interface EndpointCommunication {
 	 */
 	public List<ParkingSpot> getAllParkingSpots(String loc, String oauth_consumer_key);
 	
-	/**
-	 * NOT YET IMPLEMENTED
-	 * Provides a list of all locations car2go is operating for like Ulm or Austin.
+	/**Provides a list of all locations car2go is operating for like Ulm or Austin.
 	 * A OAuth Consumer Key is required.
 	 * http Request Type: public
 	 * @param oauth_consumer_key - valid OAuth Consumer Key
@@ -47,8 +72,7 @@ public interface EndpointCommunication {
 	 */
 	public List<Location> getAllLocations(String oauth_consumer_key);
 	
-	/**NOT YET IMPLEMENTED
-	 * Provides a list of car2go gas stations in context of specific location like Ulm or Austin. 
+	/**Provides a list of car2go gas stations in context of specific location like Ulm or Austin. 
 	 * A OAuth Consumer Key is needed.
 	 * http Request Type: public
 	 * Can be provided as KML. (NOT YET IMPLEMENTED)
@@ -59,8 +83,7 @@ public interface EndpointCommunication {
 	 */
 	public List<GasStation> getAllPGasStations(String loc, String oauth_consumer_key);
 	
-	/**
-	 * Provides a list of all free car2go vehicles for a given location like Ulm or Austin.
+	/**Provides a list of all free car2go vehicles for a given location like Ulm or Austin.
 	 * A OAuth Consumer Key is needed.
 	 * http Request Type: public
 	 * Can be provided as KML. (NOT YET IMPLEMENTED)
@@ -74,7 +97,8 @@ public interface EndpointCommunication {
 	/**NOT YET IMPLEMENTED
 	 * Provides a list of all current bookings of a user.
 	 * Access to this function is restricted.
-	 * See OAuth documentation for more details. 
+	 * See OAuth documentation for more details.
+	 * http Request Type: private
 	 * @param loc - Location e.g. ulm
 	 * @return List<Account> inner type c2G.mobile.api.objekts.Account.java
 	 */
@@ -84,6 +108,7 @@ public interface EndpointCommunication {
 	 * Provides a list of all current bookings of a user. 
 	 * Access to this function is restricted. 
 	 * See OAuth documentation for more details.
+	 * http Request Type: private
 	 * @param loc - Location e.g. ulm
 	 * @return List<Booking> inner type c2G.mobile.api.objekts.Booking.java
 	 */
@@ -93,6 +118,7 @@ public interface EndpointCommunication {
 	 * Provides the detailed information of a recently booked vehicle for the current user.
 	 * The vehicle must have been assigned to the authenticated user. 
 	 * Access to this function is restricted. See OAuth documentation for more details. 
+	 * http Request Type: private
 	 * @param loc - Location e.g. ulm
 	 * @return List<Booking> inner type c2G.mobile.api.objekts.Booking.java
 	 */
@@ -102,6 +128,7 @@ public interface EndpointCommunication {
 	 * Create a new short-term booking for a user. 
 	 * Access to this function is restricted. 
 	 * See OAuth documentation for more details. 
+	 * http Request Type: private
 	 * @param loc - Location e.g. ulm
 	 * @param vin - Vehicle Identification Number
 	 * @param accountID - current user Account ID
@@ -111,7 +138,8 @@ public interface EndpointCommunication {
 	
 	/**NOT YET IMPLEMENTED
 	 * This function provides cancellation of an existing booking. 
-	 * Access to this function is restricted. See OAuth documentation for more details. 
+	 * Access to this function is restricted. See OAuth documentation for more details.
+	 * http Request Type: private
 	 * @param bookingID
 	 * @return List<CanceledBooking> inner type c2G.mobile.api.objekts.CanceledBooking.java
 	 */

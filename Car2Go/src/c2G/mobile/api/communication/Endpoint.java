@@ -29,6 +29,10 @@ import c2G.mobile.api.objekts.ParkingSpot;
 import c2G.mobile.api.objekts.Position;
 import c2G.mobile.api.objekts.Vehicle;
 
+/**
+ * @author brought to you by 1st
+ *
+ */
 public class Endpoint implements EndpointCommunication {
 	
 	public List<Vehicle> getAllFreeVehicles(String loc, String oauth_consumer_key) {
@@ -37,31 +41,21 @@ public class Endpoint implements EndpointCommunication {
 		String data = getDataByURL(url);
 		try {
 			JSONObject jsonObj = new JSONObject(data);
-			JSONArray jsonArray = new JSONArray(jsonObj.getString("placemarks"));
-			Log.i(Endpoint.class.getName(), "Number of entries " + jsonArray.length());
+			JSONArray jsonArray = new JSONArray(jsonObj.getString(PLACEMARKS));
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				Position position = new Position(getCoordinatesFromJsonObj((JSONArray) jsonObject.get("coordinates")), jsonObject.get("address").toString());
+				Position position = new Position(getCoordinatesFromJsonArray(jsonObject.getJSONArray((COORDINATES))), jsonObject.getString(ADRESS));
 				Vehicle vehicle = new Vehicle(
-						jsonObject.get("vin").toString(),
-						jsonObject.get("name").toString(),
+						jsonObject.getString(VIN),
+						jsonObject.getString(NAME),
 						position,
-						jsonObject.get("exterior").toString(),
-						jsonObject.get("interior").toString(),
-						jsonObject.get("fuel").toString(),
-						jsonObject.get("engineType").toString());
+						jsonObject.getString(EXTERIOR),
+						jsonObject.getString(INTERIOR),
+						jsonObject.getString(FUEL),
+						jsonObject.getString(ENGINE_TYPE));
 				result.add(vehicle);
-				
-				Log.i(Endpoint.class.getName(), "starting shit");
-				Log.i(Endpoint.class.getName(), vehicle.getEngineType());
-				Log.i(Endpoint.class.getName(), vehicle.getExterior());
-				Log.i(Endpoint.class.getName(), vehicle.getFuel());
-				Log.i(Endpoint.class.getName(), vehicle.getInterior());
-				Log.i(Endpoint.class.getName(), vehicle.getPlate());
-				Log.i(Endpoint.class.getName(), vehicle.getVin());
-				Log.i(Endpoint.class.getName(), vehicle.getPosition().getAdress());
-				Log.i(Endpoint.class.getName(), String.valueOf(vehicle.getPosition().getLatitude()));
-				Log.i(Endpoint.class.getName(), String.valueOf(vehicle.getPosition().getLongitude()));
+				//debug
+//				Log.i(Endpoint.class.getCanonicalName(), vehicle.getPlate());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,25 +69,19 @@ public class Endpoint implements EndpointCommunication {
 		String data = getDataByURL(url);
 		try {
 			JSONObject jsonObj = new JSONObject(data);
-			JSONArray jsonArray = new JSONArray(jsonObj.getString("placemarks"));
-			Log.i(Endpoint.class.getName(), "Number of entries " + jsonArray.length());
+			JSONArray jsonArray = new JSONArray(jsonObj.getString(PLACEMARKS));
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				Coordinate coordinate = new Coordinate(getCoordinatesFromJsonObj((JSONArray) jsonObject.get("coordinates")));
+				Coordinate coordinate = new Coordinate(getCoordinatesFromJsonArray(jsonObject.getJSONArray(COORDINATES)));
 				ParkingSpot parkingSpot = new ParkingSpot(
 						coordinate,
-						jsonObject.get("name").toString(),
-						jsonObject.get("totalCapacity").toString(),
-						jsonObject.get("usedCapacity").toString(), 
-						jsonObject.get("chargingPole").toString());
+						jsonObject.getString(NAME),
+						jsonObject.getString(TOTAL_CAPACITY),
+						jsonObject.getString(USED_CAPACITY), 
+						jsonObject.getString(CHARGING_POLE));
 				result.add(parkingSpot);
-				Log.i(Endpoint.class.getName(), "starting out parkinspots");
-				Log.i(Endpoint.class.getName(), parkingSpot.getName());
-				Log.i(Endpoint.class.getName(), String.valueOf(parkingSpot.getTotalCapacity()));
-				Log.i(Endpoint.class.getName(), String.valueOf(parkingSpot.getUsedCapacity()));
-				Log.i(Endpoint.class.getName(), String.valueOf(parkingSpot.isChargingPole()));
-				Log.i(Endpoint.class.getName(), String.valueOf(parkingSpot.getCoordinate().getLatitude()));
-				Log.i(Endpoint.class.getName(), String.valueOf(parkingSpot.getCoordinate().getLongitude()));
+				//debug
+//				Log.i(Endpoint.class.getCanonicalName(), parkingSpot.getName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,10 +89,105 @@ public class Endpoint implements EndpointCommunication {
 		return result;
 	}
 	
+	public List<Location> getAllLocations(String oauth_consumer_key) {
+		List<Location> result = new ArrayList<Location>();
+		String url = String.format(GETALLLOCATIONS, oauth_consumer_key);
+		String data = getDataByURL(url);
+		try {
+			JSONObject jsonObj = new JSONObject(data);
+			JSONArray jsonArray = new JSONArray(jsonObj.getString(LOCATION));
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				JSONObject mapSection = jsonObject.getJSONObject(MAPS_SECTION);
+				Location location = new Location(
+						jsonObject.getString(COUNTRY_CODE),
+						jsonObject.getString(DEFAULT_LANGUAGE),
+						jsonObject.getString(LOCATION_ID), 
+						jsonObject.getString(LOCATION_NAME), 
+						new Coordinate(getCoordinatesFromJsonObjekt(mapSection.getJSONObject(CENTER))), 
+						new Coordinate(getCoordinatesFromJsonObjekt(mapSection.getJSONObject(LOWER_RIGHT))), 
+						new Coordinate(getCoordinatesFromJsonObjekt(mapSection.getJSONObject(UPPER_LEFT))), 
+						jsonObject.get(TIMEZONE).toString());
+				//debug
+//				Log.i(Endpoint.class.getCanonicalName(), location.getLocationName());
+				result.add(location);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public List<GasStation> getAllPGasStations(String loc, String oauth_consumer_key) {
+		List<GasStation> result = new ArrayList<GasStation>();
+		String url = String.format(GETALLGASSTATIONS, loc, oauth_consumer_key);
+		String data = getDataByURL(url);
+		try {
+			JSONObject jsonObj = new JSONObject(data);
+			JSONArray jsonArray = new JSONArray(jsonObj.getString(PLACEMARKS));
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				Coordinate coordinate = new Coordinate(getCoordinatesFromJsonArray((JSONArray) jsonObject.get(COORDINATES)));
+				GasStation gasStation = new GasStation(
+						coordinate,
+						jsonObject.getString(NAME));
+				result.add(gasStation);
+				//debug
+//				Log.i(Endpoint.class.getCanonicalName(), gasStation.getName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public List<Account> getAllAccounts(String loc) {
+		List<Account> result = new ArrayList<Account>();
+//		String url = String.format(GETALLACCOUNTS, loc);
+//		String data = getDataByURL(url);
+//		try {
+//			JSONObject jsonObj = new JSONObject(data);
+//			JSONArray jsonArray = new JSONArray(jsonObj.getString(PLACEMARKS));
+//			for (int i = 0; i < jsonArray.length(); i++) {
+//				JSONObject jsonObject = jsonArray.getJSONObject(i);
+//				Coordinate coordinate = new Coordinate(getCoordinatesFromJsonArray((JSONArray) jsonObject.get(COORDINATES)));
+//				GasStation gasStation = new GasStation(
+//						coordinate,
+//						jsonObject.getString(NAME));
+//				result.add(gasStation);
+//				//debug
+////				Log.i(Endpoint.class.getCanonicalName(), gasStation.getName());
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		return result;
+	}
+
+	public List<Booking> getBookings(String loc) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Booking> getBooking(String loc) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Booking> createBooking(String loc, String vin, String accountID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<CanceledBooking> cancelBooking(String bookingID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	private String getDataByURL(String url) {
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
-		Log.i(Endpoint.class.getName(), url);
+		Log.i(Endpoint.class.getName(), "connect to: " + url);
 		HttpGet httpGet = new HttpGet(url);
 		try {
 			HttpResponse response = client.execute(httpGet);
@@ -129,44 +212,14 @@ public class Endpoint implements EndpointCommunication {
 		return builder.toString();
 	}
 	
-	private Coordinate getCoordinatesFromJsonObj(JSONArray jsonArray) throws JSONException{
+	private Coordinate getCoordinatesFromJsonArray(JSONArray jsonArray) throws JSONException{
 		Coordinate coordiante = new Coordinate(jsonArray.getDouble(0),jsonArray.getDouble((0)));
 		return coordiante;
 	}
-
-	public List<Location> getAllLocations(String oauth_consumer_key) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private Coordinate getCoordinatesFromJsonObjekt(JSONObject jsonObjekt) throws JSONException{
+		Coordinate coordiante = new Coordinate(jsonObjekt.getDouble(LATITUDE), jsonObjekt.getDouble((LONGITUDE)));
+		return coordiante;
 	}
-
-	public List<GasStation> getAllPGasStations(String loc,
-			String oauth_consumer_key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Account> getAllAccounts(String loc) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Booking> getBookings(String loc) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Booking> getBooking(String loc) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Booking> createBooking(String loc, String vin, String accountID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<CanceledBooking> cancelBooking(String bookingID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }
