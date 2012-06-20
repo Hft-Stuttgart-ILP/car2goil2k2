@@ -1,5 +1,5 @@
 /** Automatically generated file. DO NOT MODIFY */
-package de.age.hellogooglemaps2;
+package de.age.googlemaps;
 
 public final class BuildConfig {
     public final static boolean DEBUG = true;

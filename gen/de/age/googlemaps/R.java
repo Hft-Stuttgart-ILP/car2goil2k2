@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package de.age.hellogooglemaps2;
+package de.age.googlemaps;
 
 public final class R {
     public static final class attr {

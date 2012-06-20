@@ -4,7 +4,7 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 
-import de.age.hellogooglemaps2.R;
+import de.age.googlemaps.R;
 
 import android.app.Activity;
 import android.os.Bundle;
