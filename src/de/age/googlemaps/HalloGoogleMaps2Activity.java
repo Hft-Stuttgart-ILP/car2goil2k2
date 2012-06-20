@@ -1,8 +1,10 @@
-package de.age.hellogooglemaps2;
+package de.age.googlemaps;
 
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+
+import de.age.hellogooglemaps2.R;
 
 import android.app.Activity;
 import android.os.Bundle;
