@@ -40,6 +40,10 @@ public class Coordinate {
 		this.longitude = longitude;
 	}
 	
+	public Coordinate getCoordinate() {
+		return this;
+	}
+	
 	@Override
 	public String toString() {
 		String result = "Latitude: " + this.latitude + " | Longitude: " + this.longitude;

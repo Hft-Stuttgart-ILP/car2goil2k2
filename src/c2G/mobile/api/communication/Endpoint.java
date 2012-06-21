@@ -30,6 +30,7 @@ import c2G.mobile.api.objekts.Position;
 import c2G.mobile.api.objekts.ReservationTime;
 import c2G.mobile.api.objekts.TimeZone;
 import c2G.mobile.api.objekts.Vehicle;
+import de.mra.calc.Distance;
 
 /**
  * @author brought to you by 1st
@@ -58,8 +59,38 @@ public class Endpoint implements EndpointCommunication {
 						jsonObject.getString(FUEL),
 						jsonObject.getString(ENGINE_TYPE));
 				result.add(vehicle);
-				//debug
-//				Log.i(Endpoint.class.getCanonicalName(), vehicle.getPlate());
+				Log.d(Endpoint.class.getCanonicalName(), vehicle.getPlate());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public List<Vehicle> getAllFreeVehiclesInRange(String loc, String oauth_consumer_key, double range, Coordinate myPosition) {
+		List<Vehicle> result = new ArrayList<Vehicle>();
+		String url = String.format(URL_GETALLFREEVEHICLES, loc, oauth_consumer_key);
+		String data = getDataByURL(url);
+		try {
+			JSONObject jsonObj = new JSONObject(data);
+			JSONArray jsonArray = new JSONArray(jsonObj.getString(PLACEMARKS));
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				Position position = new Position(
+						getCoordinatesFromJsonArray(jsonObject.getJSONArray((COORDINATES))),
+						jsonObject.getString(ADRESS));
+				if (Distance.getDistKilometer(myPosition, position) <= range) {
+					Vehicle vehicle = new Vehicle(
+							jsonObject.getString(VIN),
+							jsonObject.getString(NAME),
+							position,
+							jsonObject.getString(EXTERIOR),
+							jsonObject.getString(INTERIOR),
+							jsonObject.getString(FUEL),
+							jsonObject.getString(ENGINE_TYPE));
+					result.add(vehicle);
+					Log.d(Endpoint.class.getCanonicalName(), vehicle.getPlate());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -352,7 +383,7 @@ public class Endpoint implements EndpointCommunication {
 	
 	private Coordinate getCoordinatesFromJsonArray(JSONArray jsonArray) throws JSONException{
 		Coordinate coordiante = new Coordinate(
-				jsonArray.getDouble(0),
+				jsonArray.getDouble(1),
 				jsonArray.getDouble((0)));
 		return coordiante;
 	}
