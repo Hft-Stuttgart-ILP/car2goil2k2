@@ -34,7 +34,7 @@ import de.mra.calc.Distance;
 
 /**
  * @author brought to you by 1st
- *
+ * Provides Methods to communicate with Car2Go Endpoint.
  */
 public class Endpoint implements EndpointCommunication {
 	
@@ -67,6 +67,17 @@ public class Endpoint implements EndpointCommunication {
 		return result;
 	}
 	
+	/**Provides a list of all free car2go vehicles for a given location like Ulm or Austin within a given Range in Kilometers of the submitted Position.
+	 * A OAuth Consumer Key is needed.
+	 * http Request Type: public.
+	 * Can be provided as KML. (NOT YET IMPLEMENTED)
+	 * @param loc - Location e.g. ulm
+	 * @param oauth_consumer_key - valid OAuth Consumer Key
+	 * @param range in km
+	 * @param myPosition your current position
+	 * @return List<Vehicle> inner type c2G.mobile.api.objekts.Vehicle.java
+	 * @see More information about KML can be found at: https://developers.google.com/kml/documentation/kmlreference?hl=de
+	 */
 	public List<Vehicle> getAllFreeVehiclesInRange(String loc, String oauth_consumer_key, double range, Coordinate myPosition) {
 		List<Vehicle> result = new ArrayList<Vehicle>();
 		String url = String.format(URL_GETALLFREEVEHICLES, loc, oauth_consumer_key);
@@ -79,7 +90,7 @@ public class Endpoint implements EndpointCommunication {
 				Position position = new Position(
 						getCoordinatesFromJsonArray(jsonObject.getJSONArray((COORDINATES))),
 						jsonObject.getString(ADRESS));
-				if (Distance.getDistKilometer(myPosition, position) <= range) {
+				if (position.getDistKilometer(myPosition) <= range) {
 					Vehicle vehicle = new Vehicle(
 							jsonObject.getString(VIN),
 							jsonObject.getString(NAME),
@@ -115,8 +126,45 @@ public class Endpoint implements EndpointCommunication {
 						jsonObject.getString(USED_CAPACITY), 
 						jsonObject.getString(CHARGING_POLE));
 				result.add(parkingSpot);
-				//debug
-//				Log.i(Endpoint.class.getCanonicalName(), parkingSpot.getName());
+				Log.d(Endpoint.class.getCanonicalName(), parkingSpot.getName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**Provides a list of car2go parking spots for a specific location like Ulm or Austin  within a given Range in Kilometers of the submitted Position.
+	 * A OAuth Consumer Key is required.
+	 * http Request Type: public.
+	 * Can be provided as KML. (NOT YET IMPLEMENTED)
+	 * @param loc - Location e.g. ulm
+	 * @param oauth_consumer_key - valid OAuth Consumer Key
+	 * @param range in km
+	 * @param myPosition your current position
+	 * @return List<ParkingSpot> inner type c2G.mobile.api.objekts.ParkingSpot.java
+	 * @see More information about KML can be found at: https://developers.google.com/kml/documentation/kmlreference?hl=de
+	 */
+	public List<ParkingSpot> getAllParkingSpotsInRange(String loc, String oauth_consumer_key, double range, Coordinate myPosition) {
+		List<ParkingSpot> result = new ArrayList<ParkingSpot>();
+		String url = String.format(URL_GETALLPARKINGSPOTS, loc, oauth_consumer_key);
+		String data = getDataByURL(url);
+		try {
+			JSONObject jsonObj = new JSONObject(data);
+			JSONArray jsonArray = new JSONArray(jsonObj.getString(PLACEMARKS));
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				Coordinate coordinate = new Coordinate(getCoordinatesFromJsonArray(jsonObject.getJSONArray(COORDINATES)));
+				if (coordinate.getDistKilometer(myPosition) <= range) {
+					ParkingSpot parkingSpot = new ParkingSpot(
+							coordinate,
+							jsonObject.getString(NAME),
+							jsonObject.getString(TOTAL_CAPACITY),
+							jsonObject.getString(USED_CAPACITY), 
+							jsonObject.getString(CHARGING_POLE));
+					result.add(parkingSpot);
+					Log.d(Endpoint.class.getCanonicalName(), parkingSpot.getName());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -143,8 +191,7 @@ public class Endpoint implements EndpointCommunication {
 						new Coordinate(getCoordinatesFromJsonObjekt(mapSection.getJSONObject(LOWER_RIGHT))), 
 						new Coordinate(getCoordinatesFromJsonObjekt(mapSection.getJSONObject(UPPER_LEFT))), 
 						jsonObject.get(TIMEZONE).toString());
-				//debug
-//				Log.i(Endpoint.class.getCanonicalName(), location.getLocationName());
+				Log.d(Endpoint.class.getCanonicalName(), location.getLocationName());
 				result.add(location);
 			}
 		} catch (Exception e) {
@@ -167,8 +214,42 @@ public class Endpoint implements EndpointCommunication {
 						coordinate,
 						jsonObject.getString(NAME));
 				result.add(gasStation);
-				//debug
-//				Log.i(Endpoint.class.getCanonicalName(), gasStation.getName());
+				Log.d(Endpoint.class.getCanonicalName(), gasStation.getName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**Provides a list of car2go gas stations in context of specific location like Ulm or Austin within a given Range in Kilometers of the submitted Position.
+	 * A OAuth Consumer Key is needed.
+	 * http Request Type: public.
+	 * Can be provided as KML. (NOT YET IMPLEMENTED)
+	 * @param loc - Location e.g. ulm
+	 * @param oauth_consumer_key - valid OAuth Consumer Key
+	 * @param range in km
+	 * @param myPosition your current position
+	 * @return List<GasStation> inner type c2G.mobile.api.objekts.GasStation.java
+	 * @see More information about KML can be found at: https://developers.google.com/kml/documentation/kmlreference?hl=de
+	 */
+	public List<GasStation> getAllPGasStationsInRange(String loc, String oauth_consumer_key, double range, Coordinate myPosition) {
+		List<GasStation> result = new ArrayList<GasStation>();
+		String url = String.format(URL_GETALLGASSTATIONS, loc, oauth_consumer_key);
+		String data = getDataByURL(url);
+		try {
+			JSONObject jsonObj = new JSONObject(data);
+			JSONArray jsonArray = new JSONArray(jsonObj.getString(PLACEMARKS));
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				Coordinate coordinate = new Coordinate(getCoordinatesFromJsonArray((JSONArray) jsonObject.get(COORDINATES)));
+				if (coordinate.getDistKilometer(myPosition) <= range) {
+					GasStation gasStation = new GasStation(
+							coordinate,
+							jsonObject.getString(NAME));
+					result.add(gasStation);
+					Log.d(Endpoint.class.getCanonicalName(), gasStation.getName());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -189,9 +270,8 @@ public class Endpoint implements EndpointCommunication {
 						jsonObject.getString(ACCOUNT_ID), 
 						jsonObject.getString(DESCRIPTION));
 				result.add(account);
-				//debug
-//				Log.i(Endpoint.class.getCanonicalName(), account.getAccountId());
-//				Log.i(Endpoint.class.getCanonicalName(), account.getDescription());
+				Log.d(Endpoint.class.getCanonicalName(), account.getAccountId());
+				Log.d(Endpoint.class.getCanonicalName(), account.getDescription());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -253,9 +333,8 @@ public class Endpoint implements EndpointCommunication {
 						vehicle,
 						reservationTime);
 				result.add(booking);
-				//debug
-//				Log.i(Endpoint.class.getCanonicalName(), booking.getBookingId());
-//				Log.i(Endpoint.class.getCanonicalName(), booking.getReservationTime().getTime());
+				Log.d(Endpoint.class.getCanonicalName(), booking.getBookingId());
+				Log.d(Endpoint.class.getCanonicalName(), booking.getReservationTime().getTime());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -316,9 +395,8 @@ public class Endpoint implements EndpointCommunication {
 					vehicle,
 					reservationTime);
 			result = booking;
-			//debug
-//			Log.i(Endpoint.class.getCanonicalName(), booking.getBookingId());
-//			Log.i(Endpoint.class.getCanonicalName(), booking.getReservationTime().getTime());
+			Log.d(Endpoint.class.getCanonicalName(), booking.getBookingId());
+			Log.d(Endpoint.class.getCanonicalName(), booking.getReservationTime().getTime());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -344,9 +422,8 @@ public class Endpoint implements EndpointCommunication {
 					jsonObject.getString(CANCEL_FEE_CURRENCY),
 					jsonObject.getBoolean(CANCEL_FEE_EXISTS));
 			result = canceledBooking;
-			//debug
-//			Log.i(Endpoint.class.getCanonicalName(), canceledBooking.getCancelFee());
-//			Log.i(Endpoint.class.getCanonicalName(), canceledBooking.getCancelFeeCurrency());
+			Log.d(Endpoint.class.getCanonicalName(), canceledBooking.getCancelFee());
+			Log.d(Endpoint.class.getCanonicalName(), canceledBooking.getCancelFeeCurrency());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -356,7 +433,7 @@ public class Endpoint implements EndpointCommunication {
 	private String getDataByURL(String url) {
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
-		Log.i(Endpoint.class.getName(), "connect to: " + url);
+		Log.d(Endpoint.class.getName(), "connect to: " + url);
 		HttpGet httpGet = new HttpGet(url);
 		try {
 			HttpResponse response = client.execute(httpGet);

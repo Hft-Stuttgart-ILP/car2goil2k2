@@ -13,7 +13,8 @@ import c2G.mobile.api.objekts.Vehicle;
 
 /**
  * @author brought to you by 1st
- *
+ * Interface to implement communication with Car2Go Endpoint.
+ * URL and JSon Constants. Any Changes must be published in this Interface.
  */
 public interface EndpointCommunication {
 	
@@ -174,16 +175,4 @@ public interface EndpointCommunication {
 	 */
 	public CanceledBooking cancelBooking(String bookingID);
 	
-	/**Provides a list of all free car2go vehicles for a given location like Ulm or Austin within a given Range in Kilometers of the submitted Position.
-	 * A OAuth Consumer Key is needed.
-	 * http Request Type: public.
-	 * Can be provided as KML. (NOT YET IMPLEMENTED)
-	 * @param loc - Location e.g. ulm
-	 * @param oauth_consumer_key - valid OAuth Consumer Key
-	 * @param range in km
-	 * @param myPosition your current position
-	 * @return List<Vehicle> inner type c2G.mobile.api.objekts.Vehicle.java
-	 * @see More information about KML can be found at: https://developers.google.com/kml/documentation/kmlreference?hl=de
-	 */
-	public List<Vehicle> getAllFreeVehiclesInRange(String loc, String oauth_consumer_key, double range, Coordinate myPosition);
 }
