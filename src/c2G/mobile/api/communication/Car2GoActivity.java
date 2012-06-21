@@ -10,6 +10,7 @@ public class Car2GoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
         Endpoint ep = new Endpoint();
 //        ep.getAllFreeVehicles("ulm", "AdrianMarsch");
 //        ep.getAllParkingSpots("ulm", "AdrianMarsch");
