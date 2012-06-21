@@ -19,9 +19,38 @@ public class OptionsScreen extends Activity{
 	public void SaveChangesButtonOnClick(View view){
 		switch(view.getId()){
 		case R.id.SaveChangesButton:
-				setResult(RESULT_OK);
-				this.finish();
-				break;
+			Spinner GPSSpinner = (Spinner) findViewById(R.id.GPSSpinner);
+			
+			// TODO: identify item and parse content
+			
+			if(GPSSpinner.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.yes))){
+				SettingClass.setUseGps(true);
+				
+			}
+			else{
+				SettingClass.setUseGps(false);
+				
+			}
+			
+			
+			// TODO: identify item and parse content
+			
+			Spinner RadiusSpinner = (Spinner) findViewById(R.id.RadiusSpinner);
+			if(RadiusSpinner.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.big))){
+				SettingClass.setSearchRadius(getResources().getString(R.string.big));
+				
+			}
+			else if(RadiusSpinner.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.middle))){
+				SettingClass.setSearchRadius(getResources().getString(R.string.middle));
+				
+			}
+			else{
+				SettingClass.setSearchRadius(getResources().getString(R.string.small));
+			}
+			setResult(RESULT_OK);
+			break;
 		}
+		this.finish();
+		
 	}
 }

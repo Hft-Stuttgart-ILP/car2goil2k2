@@ -14,8 +14,6 @@ public class Startscreen extends Activity {
 
     // private Button button1;
     private Intent intent;
-    private boolean login = false;
-    private boolean useGps = true;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,24 +52,22 @@ public class Startscreen extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
         // See which child activity is calling us back.
         switch (requestCode) {
+        //login
             case 0:
                 // This is the standard resultCode that is sent back if the
                 // activity crashed or didn't doesn't supply an explicit result.
-                if (resultCode == RESULT_CANCELED){
+                if (resultCode == RESULT_OK){
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
                 } 
                 else {
-                	this.login = true;
+//                	this.login = true;
                 }
                 break;
+        //options
             case 1: 
-            	if (resultCode == RESULT_CANCELED){
-            		this.useGps = false;
-                } 
-                else {
-                	this.useGps = true;
-                	Toast.makeText(this, "GPSUse == True", Toast.LENGTH_LONG).show();
-                }
+            	if (resultCode == RESULT_OK){
+            		Toast.makeText(this, "Save successfull", Toast.LENGTH_SHORT).show();
+            	}
             default:
                 break;
         }
@@ -81,8 +77,8 @@ public class Startscreen extends Activity {
 		switch (view.getId()) {
 		case R.id.MapButton:
 			intent = new Intent(this, StadtelisteScreen.class);
-			intent.putExtra("Login", login);
-			intent.putExtra("UseGps", useGps);
+//			intent.putExtra("Login", login);
+//			intent.putExtra("UseGps", useGps);
 			startActivity(intent);
 			break;	
 		}
