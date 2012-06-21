@@ -1,8 +1,6 @@
 package de.mra.calc;
 
 public class distance {
-	
-	public class distance {
 		
 		double distKilometer;
 		double distMeter;
@@ -58,7 +56,5 @@ public class distance {
 			return durationMinute;
 			
 		}	
-		
-	}
 
 }

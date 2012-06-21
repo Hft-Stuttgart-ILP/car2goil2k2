@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, HalloGoogleMaps2Activity!</string>
-    <string name="app_name">HalloGoogleMaps2</string>
+    <string name="hello">Welcome to Car2Il2k12 App</string>
+    <string name="app_name">Shizzlemybeschizzle</string>
+    <string name="start">Car2Il2k12</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="back">Back</string>
+    <string name="settings">Settings</string>
+    <string name="Map">Map</string>
+    <string name="mapscreen">mapscreen</string>
+    <string name="usegps">Use GPS ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string-array name="GpsYesNo">
+        <item>@string/yes</item>
+        <item>@string/no</item>
+    </string-array>
+    <string name="savechanges">Save Changes</string>
+    <string name="small">Small</string>
+    <string name="middle">Middle</string>
+    <string name="big">Big</string>
+    <string name="radius">Display searchresults in Area</string>
+    <string-array name="SearchRadiusArray">
+        <item>@string/small</item>
+        <item>@string/middle</item>
+        <item>@string/big</item>
+    </string-array>
 
 </resources>
