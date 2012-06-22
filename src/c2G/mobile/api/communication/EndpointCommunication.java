@@ -5,6 +5,7 @@ import java.util.List;
 import c2G.mobile.api.objekts.Account;
 import c2G.mobile.api.objekts.Booking;
 import c2G.mobile.api.objekts.CanceledBooking;
+import c2G.mobile.api.objekts.Coordinate;
 import c2G.mobile.api.objekts.GasStation;
 import c2G.mobile.api.objekts.Location;
 import c2G.mobile.api.objekts.ParkingSpot;
@@ -12,7 +13,8 @@ import c2G.mobile.api.objekts.Vehicle;
 
 /**
  * @author brought to you by 1st
- *
+ * Interface to implement communication with Car2Go Endpoint.
+ * URL and JSon Constants. Any Changes must be published in this Interface.
  */
 public interface EndpointCommunication {
 	
@@ -83,7 +85,7 @@ public interface EndpointCommunication {
 	
 	/**Provides a list of car2go parking spots for a specific location like Ulm or Austin.
 	 * A OAuth Consumer Key is required.
-	 * http Request Type: public
+	 * http Request Type: public.
 	 * Can be provided as KML. (NOT YET IMPLEMENTED)
 	 * @param loc - Location e.g. ulm
 	 * @param oauth_consumer_key - valid OAuth Consumer Key
@@ -94,7 +96,7 @@ public interface EndpointCommunication {
 	
 	/**Provides a list of all locations car2go is operating for like Ulm or Austin.
 	 * A OAuth Consumer Key is required.
-	 * http Request Type: public
+	 * http Request Type: public.
 	 * @param oauth_consumer_key - valid OAuth Consumer Key
 	 * @return List<Location> inner type c2G.mobile.api.objekts.Location.java
 	 */
@@ -102,7 +104,7 @@ public interface EndpointCommunication {
 	
 	/**Provides a list of car2go gas stations in context of specific location like Ulm or Austin. 
 	 * A OAuth Consumer Key is needed.
-	 * http Request Type: public
+	 * http Request Type: public.
 	 * Can be provided as KML. (NOT YET IMPLEMENTED)
 	 * @param loc - Location e.g. ulm
 	 * @param oauth_consumer_key - valid OAuth Consumer Key
@@ -113,7 +115,7 @@ public interface EndpointCommunication {
 	
 	/**Provides a list of all free car2go vehicles for a given location like Ulm or Austin.
 	 * A OAuth Consumer Key is needed.
-	 * http Request Type: public
+	 * http Request Type: public.
 	 * Can be provided as KML. (NOT YET IMPLEMENTED)
 	 * @param loc - Location e.g. ulm
 	 * @param oauth_consumer_key - valid OAuth Consumer Key
@@ -126,7 +128,7 @@ public interface EndpointCommunication {
 	 * Provides a list of all current bookings of a user.
 	 * Access to this function is restricted.
 	 * See OAuth documentation for more details.
-	 * http Request Type: private
+	 * http Request Type: private.
 	 * @param loc - Location e.g. ulm
 	 * @return List<Account> inner type c2G.mobile.api.objekts.Account.java
 	 */
@@ -136,7 +138,7 @@ public interface EndpointCommunication {
 	 * Provides a list of all current bookings of a user. 
 	 * Access to this function is restricted. 
 	 * See OAuth documentation for more details.
-	 * http Request Type: private
+	 * http Request Type: private.
 	 * @param loc - Location e.g. ulm
 	 * @return List<Booking> inner type c2G.mobile.api.objekts.Booking.java
 	 */
@@ -146,7 +148,7 @@ public interface EndpointCommunication {
 	 * Provides the detailed information of a recently booked vehicle for the current user.
 	 * The vehicle must have been assigned to the authenticated user. 
 	 * Access to this function is restricted. See OAuth documentation for more details. 
-	 * http Request Type: private
+	 * http Request Type: private.
 	 * @param loc - Location e.g. ulm
 	 * @return List<Booking> inner type c2G.mobile.api.objekts.Booking.java
 	 */
@@ -156,7 +158,7 @@ public interface EndpointCommunication {
 	 * Create a new short-term booking for a user. 
 	 * Access to this function is restricted. 
 	 * See OAuth documentation for more details. 
-	 * http Request Type: private
+	 * http Request Type: private.
 	 * @param loc - Location e.g. ulm
 	 * @param vin - Vehicle Identification Number
 	 * @param accountID - current user Account ID
@@ -167,9 +169,10 @@ public interface EndpointCommunication {
 	/**NOT YET IMPLEMENTED
 	 * This function provides cancellation of an existing booking. 
 	 * Access to this function is restricted. See OAuth documentation for more details.
-	 * http Request Type: private
+	 * http Request Type: private.
 	 * @param bookingID
 	 * @return List<CanceledBooking> inner type c2G.mobile.api.objekts.CanceledBooking.java
 	 */
 	public CanceledBooking cancelBooking(String bookingID);
+	
 }
