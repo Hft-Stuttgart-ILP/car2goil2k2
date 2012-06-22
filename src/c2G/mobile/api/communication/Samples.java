@@ -6,16 +6,14 @@ import c2G.mobile.api.Utils.Utilities;
 import c2G.mobile.api.objekts.Coordinate;
 import c2G.mobile.api.objekts.Location;
 import c2G.mobile.api.objekts.Vehicle;
-import Car2Go.mobile.api.communication.R;
-import android.app.Activity;
 import android.os.Bundle;
 
-public class Car2GoActivity extends Activity {
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+/**
+ * @author brought to you by 1st
+ * show me some Samples how to Use communication via Endpoint Framework, Filtering Lists and Utils
+ */
+public class Samples {
+    public void dosometesting(Bundle savedInstanceState) {
         /*
          * samples
          */
