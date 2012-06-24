@@ -60,7 +60,7 @@ public class Login extends Activity {
         try {
 			loadScreen();
 		} catch (IllegalArgumentException e) {
-			toast = Toast.makeText(Login.this,"Fehler beim Verbindungsauf. Überprüfen sie ihre Internetverbindung", Toast.LENGTH_SHORT);
+			toast = Toast.makeText(Login.this,"Fehler beim Verbindungsaufbau ! Überprüfen sie ihre Internetverbindung", Toast.LENGTH_SHORT);
 			toast.show();
 			e.printStackTrace();
 			Log.d(url, "Connection is failed"+e.getMessage());
@@ -78,8 +78,9 @@ public class Login extends Activity {
 		try {
 			validate();
 		} catch (IllegalArgumentException e) {
-			toast = Toast.makeText(Login.this,"Die eingebene Pin ist falsch. Bitte versuchen sie es erneut" , Toast.LENGTH_SHORT);
+			toast = Toast.makeText(Login.this,"Der eingebene Code ist falsch ! Bitte versuchen sie es erneut" , Toast.LENGTH_SHORT);
 			toast.show();
+			pinEdit.setText("");
 			e.printStackTrace();
 			Log.d(url, "Validate is failed"+e.getMessage());
 			try {
