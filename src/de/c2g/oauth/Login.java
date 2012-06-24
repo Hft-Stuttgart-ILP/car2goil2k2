@@ -3,6 +3,10 @@ package de.c2g.oauth;
 
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -16,6 +20,7 @@ import com.hft.il.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
@@ -126,7 +131,7 @@ public class Login extends Activity {
 		
 		accessToken = service.getAccessToken(requestToken, new Verifier(
         pin2));
-     
+        
 		
 		toast = Toast.makeText(Login.this,"Anmeldung erfolgreich: " + accessToken.toString(), Toast.LENGTH_SHORT);
     	toast.show();
@@ -151,11 +156,37 @@ public class Login extends Activity {
      }
      
      
-     public static void dbWriter(Token AccessToken){
+     private byte[] toByteArray(Object paramObject)
+     throws IOException
+   {
+     ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
+     new ObjectOutputStream(localByteArrayOutputStream).writeObject(paramObject);
+     localByteArrayOutputStream.close();
+     return localByteArrayOutputStream.toByteArray();
+   }
+     
+     
+     
+     
+     
+     public  void dbWriter(Token AccessToken, Integer Id) throws IOException{
     	 
-    	 // Coming soon.....
+    	 //ID=1;
+    	 //byte[] arrayOfByte = toByteArray(AccessToken);
+    	 //db.saveAccount(ID,arrayOfByte);
+    	 
+    	 
     	 
      }
+     
+     
+     public void dbReader(){
+    	 //open.db
+    	 //db.readAccount(1);
+    	
+    	 
+     }
+     
      
      public static void accountHandler(){
     	 
