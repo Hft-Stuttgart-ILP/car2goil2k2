@@ -352,7 +352,7 @@ public class Endpoint implements EndpointCommunication {
 	
 	private Coordinate getCoordinatesFromJsonArray(JSONArray jsonArray) throws JSONException{
 		Coordinate coordiante = new Coordinate(
-				jsonArray.getDouble(0),
+				jsonArray.getDouble(1),
 				jsonArray.getDouble((0)));
 		return coordiante;
 	}

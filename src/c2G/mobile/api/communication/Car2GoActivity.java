@@ -1,6 +1,6 @@
 package c2G.mobile.api.communication;
 
-import Car2Go.mobile.api.communication.R;
+import de.age.hellogooglemaps2.R;
 import android.app.Activity;
 import android.os.Bundle;
 
