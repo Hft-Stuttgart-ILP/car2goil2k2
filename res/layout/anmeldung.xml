@@ -6,9 +6,10 @@
     <EditText 
     android:layout_width="match_parent" 
     android:layout_height="wrap_content" 
-    android:text="Pin eingeben" 
+    android:text="Code" 
     android:id="@+id/pin"></EditText>
-    <Button android:text="OK" android:layout_width="match_parent" android:onClick="action" android:layout_height="wrap_content" android:id="@+id/PinButton"></Button>
+    <Button android:text="Account Anlegen" android:layout_width="match_parent" android:onClick="action" android:layout_height="wrap_content" android:id="@+id/PinButton"></Button>
+    <Button android:id="@+id/loader" android:text="Load Account" android:layout_height="wrap_content" android:layout_width="match_parent" android:onClick="action"></Button>
   
     
     <WebView 

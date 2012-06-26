@@ -4,8 +4,10 @@ package de.c2g.oauth;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
@@ -27,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,9 +48,10 @@ public class Login extends Activity {
     private static OAuthService service;
     private static Token        requestToken;
     private static Token        accessToken;
-    private static boolean 	 	accountStatus;
+    private static boolean 	 	accountStatus=false;
    
     TextView text ;
+    Button loadA;
     String url = null;
     WebView web;
 	EditText pinEdit;
@@ -61,6 +65,10 @@ public class Login extends Activity {
         setContentView(R.layout.anmeldung);
        
         pinEdit = (EditText) findViewById(R.id.pin);
+        loadA = (Button) findViewById(R.id.loader);
+        loadA.setClickable(accountHandler());
+        
+        
     	
         try {
 			loadScreen();
@@ -74,7 +82,7 @@ public class Login extends Activity {
     }
         
 
-   
+   //
     public void action (final View view)  {
   	   
   	   
@@ -97,11 +105,17 @@ public class Login extends Activity {
 		}
  	    		
  			break;
- 	        }
-     } 
-    
-    
 
+ 	  	   case R.id.loader:
+ 	  		   dbReader();
+ 	  		   break;
+ 	     } 
+ 	        }
+  	   
+    
+    
+    //sceen for login
+    //servicebuilder
     public void loadScreen()throws IllegalArgumentException {
     	
     	service = new ServiceBuilder().provider(Car2GoApi.class)
@@ -121,7 +135,8 @@ public class Login extends Activity {
         web.getUrl();
     }
     
-
+    
+    //check code input
      private void validate() throws IllegalArgumentException {
         
     
@@ -129,20 +144,32 @@ public class Login extends Activity {
         
 		pin2 = pinEdit.getText().toString();
 		
+		 
 		accessToken = service.getAccessToken(requestToken, new Verifier(
         pin2));
         
 		
 		toast = Toast.makeText(Login.this,"Anmeldung erfolgreich: " + accessToken.toString(), Toast.LENGTH_SHORT);
     	toast.show();
+    	
+    	
+    	try {
+			dbWriter(accessToken);
+		} catch (IOException e) {
+			toast = Toast.makeText(Login.this, "Speichern des Accounts fehlgeschlagen", Toast.LENGTH_LONG);
+			toast.show();
+			Log.d("saveFile", "failed");
+			e.printStackTrace();
+		}
+	
          
     	Log.d(accessToken.toString(),"da............");
         	
-    	//Implementierung startIntent --->
+    	//implement startIntent --->
     	
     }
      
-     
+     //call for querys
      public static String privateService(String requestUrl){
     	 
     	 OAuthRequest request = new OAuthRequest(Verb.GET, requestUrl);
@@ -155,7 +182,19 @@ public class Login extends Activity {
     	 
      }
      
+     //not in used --> test for saving
+     public byte[] getBytes(Object obj) throws java.io.IOException{
+    	   ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    	   ObjectOutputStream oos = new ObjectOutputStream(baos);
+    	   oos.writeObject(obj);
+    	   oos.flush();
+    	   oos.close();
+    	   baos.close();
+    	   byte [] ba = baos.toByteArray();
+    	   return ba;
+    	   }
      
+     //convert object to ByteArray
      private byte[] toByteArray(Object paramObject)
      throws IOException
    {
@@ -168,29 +207,49 @@ public class Login extends Activity {
      
      
      
-     
-     public  void dbWriter(Token AccessToken, Integer Id) throws IOException{
+     //create saveFile
+     public  void dbWriter(Token AccessToken) throws IOException{
     	 
-    	 //ID=1;
-    	 //byte[] arrayOfByte = toByteArray(AccessToken);
-    	 //db.saveAccount(ID,arrayOfByte);
-    	 
+    	 byte[] arrayOfByte = toByteArray(AccessToken);
+    	 ByteStream.write(arrayOfByte);
     	 
     	 
      }
      
-     
+     //load saveFile
      public void dbReader(){
-    	 //open.db
-    	 //db.readAccount(1);
-    	
-    	 
+    	 accessToken = (Token) ByteStream.read();
+    	 Log.d(accessToken.toString(), "loadAccount");
      }
      
-     
-     public static void accountHandler(){
+     //checking account
+     public  boolean accountHandler(){
     	 
-    	 // Coming soon.....
+    	
+    	    String s= "/sdcard/data/ByteStream1.txt";
+    	  
+    	  
+    	    
+    	      File f = new File( s );
+    	      if ( f.exists() )
+    	      {
+    	       accountStatus = true;
+    	       toast = Toast.makeText(Login.this, "Es wurde ein Account gefunden ! Bitte Laden sie diesen", Toast.LENGTH_LONG);
+    	       toast.show();
+    	      }
+    	      
+    	      
+    	      return accountStatus;
+    	     
+    	    }
+    	  
+     
+     public void accoutSwitcher(){
+    	 
+    	 
+        
+    	 
+    	 // Coming soon...
      }
 
 
