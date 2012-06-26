@@ -8,6 +8,8 @@ public class GasStation {
 
 	Coordinate coordinate;
 	String name;
+	private double distanceKm;
+	private int timeToGo;
 	
 	public GasStation(Coordinate coordinate, String name) {
 		super();
@@ -29,6 +31,22 @@ public class GasStation {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public double getDistanceKm() {
+		return distanceKm;
+	}
+
+	public void setDistanceKm(double distanceKm) {
+		this.distanceKm = distanceKm;
+	}
+
+	public int getTimeToGo() {
+		return timeToGo;
+	}
+
+	public void setTimeToGo(int timeToGo) {
+		this.timeToGo = timeToGo;
 	}
 	
 }

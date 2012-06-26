@@ -1,5 +1,6 @@
 package de.gui.c2g;
 
+import c2G.mobile.api.communication.Samples;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ public class Anmeldescreen extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.guianmeldescreen);
-        
     }
 	
 	public void backClickHandler(View view) {

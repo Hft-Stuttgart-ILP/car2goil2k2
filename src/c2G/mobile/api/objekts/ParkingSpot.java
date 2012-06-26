@@ -11,6 +11,8 @@ public class ParkingSpot {
 	int totalCapacity;
 	int usedCapacity;
 	boolean chargingPole;
+	private double distanceKm;
+	private int timeToGo;
 	
 	public ParkingSpot(Coordinate coordinate, String name, int totalCapacity,
 			int usedCapacity, boolean chargingPole) {
@@ -69,6 +71,22 @@ public class ParkingSpot {
 
 	public void setChargingPole(boolean chargingPole) {
 		this.chargingPole = chargingPole;
+	}
+
+	public int getTimeToGo() {
+		return timeToGo;
+	}
+
+	public void setTimeToGo(int timeToGo) {
+		this.timeToGo = timeToGo;
+	}
+
+	public double getDistanceKm() {
+		return distanceKm;
+	}
+
+	public void setDistanceKm(double distanceKm) {
+		this.distanceKm = distanceKm;
 	}
 	
 }

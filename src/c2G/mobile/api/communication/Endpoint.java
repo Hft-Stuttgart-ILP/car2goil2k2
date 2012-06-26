@@ -30,7 +30,12 @@ import c2G.mobile.api.objekts.Position;
 import c2G.mobile.api.objekts.ReservationTime;
 import c2G.mobile.api.objekts.TimeZone;
 import c2G.mobile.api.objekts.Vehicle;
-import de.mra.calc.Distance;
+
+import org.scribe.oauth.OAuthService;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
 
 /**
  * @author brought to you by 1st
@@ -257,10 +262,10 @@ public class Endpoint implements EndpointCommunication {
 		return result;
 	}
 
-	public List<Account> getAllAccounts(String loc) {
+	public List<Account> getAllAccounts(String loc, OAuthService service, Token accessToken) {
 		List<Account> result = new ArrayList<Account>();
 		String url = String.format(URL_GETALLACCOUNTS, loc);
-		String data = getDataByURL(url);
+		String data = getDataByPrivateURL(url, service, accessToken);
 		try {
 			JSONObject jsonObj = new JSONObject(data);
 			JSONArray jsonArray = new JSONArray(jsonObj.getString(ACCOUNT));
@@ -279,10 +284,10 @@ public class Endpoint implements EndpointCommunication {
 		return result;
 	}
 
-	public List<Booking> getBookings(String loc) {
+	public List<Booking> getBookings(String loc, OAuthService service, Token accessToken) {
 		List<Booking> result = new ArrayList<Booking>();
 		String url = String.format(URL_GETBOOKINGS, loc);
-		String data = getDataByURL(url);
+		String data = getDataByPrivateURL(url, service, accessToken);
 		try {
 			JSONObject jsonObj = new JSONObject(data);
 			JSONArray jsonArray = new JSONArray(jsonObj.getString(BOOKING));
@@ -342,10 +347,10 @@ public class Endpoint implements EndpointCommunication {
 		return result;
 	}
 
-	public Booking getBooking(String loc) {
+	public Booking getBooking(String loc, OAuthService service, Token accessToken) {
 		Booking result = null;
 		String url = String.format(URL_GETBOOKINGS, loc);
-		String data = getDataByURL(url);
+		String data = getDataByPrivateURL(url, service, accessToken);
 		try {
 			JSONObject jsonObj = new JSONObject(data);
 			JSONArray jsonArray = new JSONArray(jsonObj.getString(BOOKING));
@@ -404,15 +409,15 @@ public class Endpoint implements EndpointCommunication {
 		return result;
 	}
 
-	public List<Booking> createBooking(String loc, String vin, String accountID) {
+	public List<Booking> createBooking(String loc, String vin, String accountID, OAuthService service, Token accessToken) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public CanceledBooking cancelBooking(String bookingID) {
+	public CanceledBooking cancelBooking(String bookingID, OAuthService service, Token accessToken) {
 		CanceledBooking result = null;
 		String url = String.format(URL_CANCELBOOKING, bookingID);
-		String data = getDataByURL(url);
+		String data = getDataByPrivateURL(url, service, accessToken);
 		try {
 			JSONObject jsonObj = new JSONObject(data);
 			JSONArray jsonArray = new JSONArray(jsonObj.getString(CANCEL_BOOKING));
@@ -458,21 +463,46 @@ public class Endpoint implements EndpointCommunication {
 		return builder.toString();
 	}
 	
-	private Coordinate getCoordinatesFromJsonArray(JSONArray jsonArray) throws JSONException{
+	private String getDataByPrivateURL(String url, OAuthService service, Token accessToken) {
+		StringBuilder builder = new StringBuilder();
+	    OAuthRequest request = new OAuthRequest(Verb.GET, url);
+        service.signRequest(accessToken, request);
+		Log.d(Endpoint.class.getName(), "connect to: " + url);
+		try {
+	        Response response = request.send();
+			if (response.isSuccessful()) {
+				InputStream content = response.getStream();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+				String line;
+				while ((line = reader.readLine()) != null) {
+					builder.append(line);
+				}
+			} else {
+				Log.e(Endpoint.class.toString(), "Failed to download file");
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return builder.toString();
+	}
+	
+	protected Coordinate getCoordinatesFromJsonArray(JSONArray jsonArray) throws JSONException{
 		Coordinate coordiante = new Coordinate(
 				jsonArray.getDouble(1),
 				jsonArray.getDouble((0)));
 		return coordiante;
 	}
 	
-	private Coordinate getCoordinatesFromJsonObjekt(JSONObject jsonObjekt) throws JSONException{
+	protected Coordinate getCoordinatesFromJsonObjekt(JSONObject jsonObjekt) throws JSONException{
 		Coordinate coordiante = new Coordinate(
 				jsonObjekt.getDouble(LATITUDE), 
 				jsonObjekt.getDouble((LONGITUDE)));
 		return coordiante;
 	}
 	
-	private Position getPositionFromJsonObjekt(JSONObject jsonObjekt) throws JSONException{
+	protected Position getPositionFromJsonObjekt(JSONObject jsonObjekt) throws JSONException{
 		Position position = new Position(
 				jsonObjekt.getDouble(LATITUDE),
 				jsonObjekt.getDouble(LONGITUDE),

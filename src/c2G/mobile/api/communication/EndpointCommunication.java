@@ -2,10 +2,12 @@ package c2G.mobile.api.communication;
 
 import java.util.List;
 
+import org.scribe.model.Token;
+import org.scribe.oauth.OAuthService;
+
 import c2G.mobile.api.objekts.Account;
 import c2G.mobile.api.objekts.Booking;
 import c2G.mobile.api.objekts.CanceledBooking;
-import c2G.mobile.api.objekts.Coordinate;
 import c2G.mobile.api.objekts.GasStation;
 import c2G.mobile.api.objekts.Location;
 import c2G.mobile.api.objekts.ParkingSpot;
@@ -132,7 +134,7 @@ public interface EndpointCommunication {
 	 * @param loc - Location e.g. ulm
 	 * @return List<Account> inner type c2G.mobile.api.objekts.Account.java
 	 */
-	public List<Account> getAllAccounts(String loc);
+	public List<Account> getAllAccounts(String loc, OAuthService service, Token accessToken);
 	
 	/**NOT YET IMPLEMENTED
 	 * Provides a list of all current bookings of a user. 
@@ -142,7 +144,7 @@ public interface EndpointCommunication {
 	 * @param loc - Location e.g. ulm
 	 * @return List<Booking> inner type c2G.mobile.api.objekts.Booking.java
 	 */
-	public List<Booking> getBookings(String loc);
+	public List<Booking> getBookings(String loc, OAuthService service, Token accessToken);
 	
 	/**NOT YET IMPLEMENTED
 	 * Provides the detailed information of a recently booked vehicle for the current user.
@@ -152,11 +154,11 @@ public interface EndpointCommunication {
 	 * @param loc - Location e.g. ulm
 	 * @return List<Booking> inner type c2G.mobile.api.objekts.Booking.java
 	 */
-	public Booking getBooking(String loc);
+	public Booking getBooking(String loc, OAuthService service, Token accessToken);
 	
 	/**NOT YET IMPLEMENTED
 	 * Create a new short-term booking for a user. 
-	 * Access to this function is restricted. 
+	 * Access to this function is restricted.
 	 * See OAuth documentation for more details. 
 	 * http Request Type: private.
 	 * @param loc - Location e.g. ulm
@@ -164,7 +166,7 @@ public interface EndpointCommunication {
 	 * @param accountID - current user Account ID
 	 * @return List<Booking> inner type c2G.mobile.api.objekts.Booking.java
 	 */
-	public List<Booking> createBooking(String loc, String vin, String accountID);
+	public List<Booking> createBooking(String loc, String vin, String accountID, OAuthService service, Token accessToken);
 	
 	/**NOT YET IMPLEMENTED
 	 * This function provides cancellation of an existing booking. 
@@ -173,6 +175,6 @@ public interface EndpointCommunication {
 	 * @param bookingID
 	 * @return List<CanceledBooking> inner type c2G.mobile.api.objekts.CanceledBooking.java
 	 */
-	public CanceledBooking cancelBooking(String bookingID);
+	public CanceledBooking cancelBooking(String bookingID, OAuthService service, Token accessToken);
 	
 }

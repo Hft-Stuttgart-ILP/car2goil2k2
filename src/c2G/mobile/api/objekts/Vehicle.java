@@ -12,6 +12,8 @@ public class Vehicle {
 	String interior;
 	String fuel;
 	String engineType;
+	private double distanceKm;
+	private int timeToGo;
 
 	public Vehicle(String vin, String plate, Position position,
 			String exterior, String interior, String fuel, String engineType) {
@@ -89,6 +91,22 @@ public class Vehicle {
 
 	public void setEngineType(String engineType) {
 		this.engineType = engineType;
+	}
+	
+	public double getDistanceKm() {
+		return distanceKm;
+	}
+
+	public void setDistanceKm(double distanceKm) {
+		this.distanceKm = distanceKm;
+	}
+
+	public int getTimeToGo() {
+		return timeToGo;
+	}
+
+	public void setTimeToGo(int timeToGo) {
+		this.timeToGo = timeToGo;
 	}
 	
 }
