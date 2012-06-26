@@ -18,6 +18,7 @@ public class Startscreen extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SettingClass.RestoreValues();
         setContentView(R.layout.main);
         
         
