@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="hello">Hello World, HalloGoogleMaps2Activity!</string>
-    <string name="app_name">HalloGoogleMaps2</string>
-    <string name="keinGPS">Kein GPS! Empfänger Bitte aktivieren.</string>
-
-</resources>
