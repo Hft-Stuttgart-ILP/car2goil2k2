@@ -3,6 +3,7 @@ package de.gui.c2g;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class OptionsScreen extends Activity{
@@ -12,6 +13,10 @@ public class OptionsScreen extends Activity{
         super.onCreate(savedInstanceState);
 
         spinner = (Spinner) findViewById(R.id.GPSSpinner);
+
+        int spinnerPosition = SettingClass.isUseGps() ? 0:1;
+
+        spinner.setSelection(spinnerPosition);
 
         setContentView(R.layout.guioptionsscreen);
     }
