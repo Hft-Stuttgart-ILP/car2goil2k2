@@ -30,7 +30,6 @@ import c2G.mobile.api.objekts.Position;
 import c2G.mobile.api.objekts.ReservationTime;
 import c2G.mobile.api.objekts.TimeZone;
 import c2G.mobile.api.objekts.Vehicle;
-import de.mra.calc.Distance;
 
 /**
  * @author brought to you by 1st
