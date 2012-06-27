@@ -20,8 +20,6 @@ public class Startscreen extends Activity {
         super.onCreate(savedInstanceState);
         SettingClass.RestoreValues();
         setContentView(R.layout.main);
-        
-        
     }
     
 	@Override
@@ -34,11 +32,14 @@ public class Startscreen extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+//    	OptionsScreen
         switch (item.getItemId()) {
             case R.id.item1:
             	intent = new Intent(this, OptionsScreen.class);
-    			startActivityForResult(intent, 1);
+    			//startActivityForResult(intent, 1);
+            	startActivity(intent);
                 return true;
+//                LoginScreen
             case R.id.item2:
             	intent = new Intent(this, Anmeldescreen.class);
     			startActivityForResult(intent, 0);
