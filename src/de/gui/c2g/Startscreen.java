@@ -78,7 +78,7 @@ public class Startscreen extends Activity {
     public void myHandler(View view) {
 		switch (view.getId()) {
 		case R.id.MapButton:
-			intent = new Intent(this, StadtelisteScreen.class);
+			intent = new Intent(this, Map.class);
 //			intent.putExtra("Login", login);
 //			intent.putExtra("UseGps", useGps);
 			startActivity(intent);
