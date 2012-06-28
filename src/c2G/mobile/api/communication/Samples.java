@@ -12,8 +12,8 @@ import c2G.mobile.api.Utils.Utilities;
 import c2G.mobile.api.objekts.Coordinate;
 import c2G.mobile.api.objekts.Location;
 import c2G.mobile.api.objekts.Vehicle;
-import de.c2g.oauth.test.Car2GoApi;
-import de.c2g.oauth.test.Login;
+//import de.c2g.oauth.test.Car2GoApi;
+//import de.c2g.oauth.test.Login;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -80,21 +80,21 @@ public class Samples {
 //        System.out.println("detected location is: ---->" + detectUlm.getLocationName());
         
         //Test private Services
-        System.out.println("init Login");
-        Login login = new Login();
-        System.out.println("load screen...");
-        login.loadScreen();
-        System.out.println("reading data...");
-        Token accessToken = login.dbReader();
-        System.out.println("Access Token to String " + accessToken.toString());
-        System.out.println("starting request...");
-//        ep.getAllAccounts(loc, login.getService(), accessToken);
+//        System.out.println("init Login");
+//        Login login = new Login();
+//        System.out.println("load screen...");
+//        login.loadScreen();
+//        System.out.println("reading data...");
+//        Token accessToken = login.dbReader();
+//        System.out.println("Access Token to String " + accessToken.toString());
+//        System.out.println("starting request...");
+////        ep.getAllAccounts(loc, login.getService(), accessToken);
+////        System.out.println("done");
+//        
+//        System.out.println("alternative access...");
+//        PrivateEndpoint pep = new PrivateEndpoint(login.getService(), accessToken);
+//        pep.getAllAccounts(loc);
 //        System.out.println("done");
-        
-        System.out.println("alternative access...");
-        PrivateEndpoint pep = new PrivateEndpoint(login.getService(), accessToken);
-        pep.getAllAccounts(loc);
-        System.out.println("done");
 
     }
 }
