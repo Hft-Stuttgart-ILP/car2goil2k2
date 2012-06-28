@@ -101,6 +101,8 @@ public class Startscreen extends Activity {
 		switch (view.getId()) {
 		case R.id.MapButton:
 			intent = new Intent(this, Map.class);
+//			intent.putExtra("Login", login);
+//			intent.putExtra("UseGps", useGps);
 			startActivity(intent);
 			break;	
 		}
