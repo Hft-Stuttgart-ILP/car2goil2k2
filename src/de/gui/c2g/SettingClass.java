@@ -5,6 +5,17 @@ public class SettingClass {
 	static boolean useGps = false;
 	static sRadius searchRadius = sRadius.small;
 	static String town;
+	static boolean hometownSet = false;
+	
+	public static boolean isHometownSet() {
+		return hometownSet;
+	}
+	public static void setHometownSet(boolean hometownSet) {
+		SettingClass.hometownSet = hometownSet;
+	}
+	public static void setSearchRadius(sRadius searchRadius) {
+		SettingClass.searchRadius = searchRadius;
+	}
 	static enum sRadius{ small, middle, big}
 	
 	public static boolean isUseGps() {

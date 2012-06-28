@@ -14,12 +14,21 @@ public class Startscreen extends Activity {
 
     // private Button button1;
     private Intent intent;
+
+    private final int StadteListeResultId = 3;
+    private final int OptionsScreenResultId = 1;
+    private final int AnmeldescreenResultId = 0;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SettingClass.RestoreValues();
         setContentView(R.layout.main);
+        if(!SettingClass.isHometownSet()){
+		      	Intent aintent = new Intent(this, StadtelisteScreen.class);
+    			startActivityForResult(aintent, StadteListeResultId);
+                //return true;
+    	}
     }
     
 	@Override
@@ -36,13 +45,13 @@ public class Startscreen extends Activity {
         switch (item.getItemId()) {
             case R.id.item1:
             	intent = new Intent(this, OptionsScreen.class);
-    			//startActivityForResult(intent, 1);
+    			//startActivityForResult(intent, OptionsScreenResultId);
             	startActivity(intent);
                 return true;
 //                LoginScreen
             case R.id.item2:
             	intent = new Intent(this, Anmeldescreen.class);
-    			startActivityForResult(intent, 0);
+    			startActivityForResult(intent, AnmeldescreenResultId);
     			break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -55,7 +64,7 @@ public class Startscreen extends Activity {
         // See which child activity is calling us back.
         switch (requestCode) {
         //login
-            case 0:
+            case AnmeldescreenResultId:
                 // This is the standard resultCode that is sent back if the
                 // activity crashed or didn't doesn't supply an explicit result.
                 if (resultCode == RESULT_OK){
