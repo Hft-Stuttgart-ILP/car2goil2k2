@@ -109,4 +109,10 @@ public class Vehicle {
 		this.timeToGo = timeToGo;
 	}
 	
+	@Override
+	public String toString() {
+		String result = "Entfernung: " + this.distanceKm + " km / Entfernung: " + this.timeToGo + " min";
+		return result;
+	}
+	
 }

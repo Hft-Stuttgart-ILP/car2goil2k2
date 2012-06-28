@@ -23,10 +23,10 @@ public class Utilities {
 		return null;
 	}
 	
-	public static List<Vehicle> filterVehicleList(List<Vehicle> list, Coordinate coordinate, int radius) {
+	public static List<Vehicle> filterVehicleList(List<Vehicle> list, Coordinate coordinate, double range) {
 		List<Vehicle> result = new ArrayList<Vehicle>();
         for (int i = 0; i < list.size(); i++) {
-        	if (list.get(i).getPosition().getCoordinate().getDistKilometer(coordinate) <= radius) {
+        	if (list.get(i).getPosition().getCoordinate().getDistKilometer(coordinate) <= range) {
                 double distanceKm = list.get(i).getPosition().getCoordinate().getDistKilometer(new Coordinate(48.400833,9.987222));
                 int timeToGo = list.get(i).getPosition().getCoordinate().getDurationOf(distanceKm);
         		list.get(i).setDistanceKm(distanceKm);
@@ -37,10 +37,10 @@ public class Utilities {
         return result;
 	}
 	
-	public static List<ParkingSpot> filterParkingSpotsList(List<ParkingSpot> list, Coordinate coordinate, int radius) {
+	public static List<ParkingSpot> filterParkingSpotsList(List<ParkingSpot> list, Coordinate coordinate, double range) {
 		List<ParkingSpot> result = new ArrayList<ParkingSpot>();
         for (int i = 0; i < list.size(); i++) {
-        	if (list.get(i).getCoordinate().getDistKilometer(coordinate) <= radius) {
+        	if (list.get(i).getCoordinate().getDistKilometer(coordinate) <= range) {
                 double distanceKm = list.get(i).getCoordinate().getDistKilometer(new Coordinate(48.400833,9.987222));
                 int timeToGo = list.get(i).getCoordinate().getDurationOf(distanceKm);
         		list.get(i).setDistanceKm(distanceKm);
@@ -51,10 +51,10 @@ public class Utilities {
         return result;
 	}
 	
-	public static List<GasStation> filterGasStationList(List<GasStation> list, Coordinate coordinate, int radius) {
+	public static List<GasStation> filterGasStationList(List<GasStation> list, Coordinate coordinate, double range) {
 		List<GasStation> result = new ArrayList<GasStation>();
         for (int i = 0; i < list.size(); i++) {
-        	if (list.get(i).getCoordinate().getDistKilometer(coordinate) <= radius) {
+        	if (list.get(i).getCoordinate().getDistKilometer(coordinate) <= range) {
                 double distanceKm = list.get(i).getCoordinate().getDistKilometer(new Coordinate(48.400833,9.987222));
                 int timeToGo = list.get(i).getCoordinate().getDurationOf(distanceKm);
         		list.get(i).setDistanceKm(distanceKm);

@@ -95,7 +95,8 @@ public class Endpoint implements EndpointCommunication {
 				Position position = new Position(
 						getCoordinatesFromJsonArray(jsonObject.getJSONArray((COORDINATES))),
 						jsonObject.getString(ADRESS));
-				if (position.getDistKilometer(myPosition) <= range) {
+				double km = position.getDistKilometer(myPosition);
+				if (km <= range) {
 					Vehicle vehicle = new Vehicle(
 							jsonObject.getString(VIN),
 							jsonObject.getString(NAME),
@@ -104,6 +105,8 @@ public class Endpoint implements EndpointCommunication {
 							jsonObject.getString(INTERIOR),
 							jsonObject.getString(FUEL),
 							jsonObject.getString(ENGINE_TYPE));
+					vehicle.setDistanceKm(km);
+					vehicle.setTimeToGo(position.getDurationOf(km));
 					result.add(vehicle);
 					Log.d(Endpoint.class.getCanonicalName(), vehicle.getPlate());
 				}
@@ -160,13 +163,16 @@ public class Endpoint implements EndpointCommunication {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				Coordinate coordinate = new Coordinate(getCoordinatesFromJsonArray(jsonObject.getJSONArray(COORDINATES)));
-				if (coordinate.getDistKilometer(myPosition) <= range) {
+				double km = coordinate.getDistKilometer(myPosition);
+				if (km <= range) {
 					ParkingSpot parkingSpot = new ParkingSpot(
 							coordinate,
 							jsonObject.getString(NAME),
 							jsonObject.getString(TOTAL_CAPACITY),
 							jsonObject.getString(USED_CAPACITY), 
 							jsonObject.getString(CHARGING_POLE));
+					parkingSpot.setDistanceKm(km);
+					parkingSpot.setTimeToGo(coordinate.getDurationOf(km));
 					result.add(parkingSpot);
 					Log.d(Endpoint.class.getCanonicalName(), parkingSpot.getName());
 				}
@@ -248,10 +254,13 @@ public class Endpoint implements EndpointCommunication {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				Coordinate coordinate = new Coordinate(getCoordinatesFromJsonArray((JSONArray) jsonObject.get(COORDINATES)));
-				if (coordinate.getDistKilometer(myPosition) <= range) {
+				double km = coordinate.getDistKilometer(myPosition);
+				if (km <= range) {
 					GasStation gasStation = new GasStation(
 							coordinate,
 							jsonObject.getString(NAME));
+					gasStation.setDistanceKm(km);
+					gasStation.setTimeToGo(coordinate.getDurationOf(km));
 					result.add(gasStation);
 					Log.d(Endpoint.class.getCanonicalName(), gasStation.getName());
 				}
@@ -410,8 +419,66 @@ public class Endpoint implements EndpointCommunication {
 	}
 
 	public List<Booking> createBooking(String loc, String vin, String accountID, OAuthService service, Token accessToken) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Booking> result = new ArrayList<Booking>();
+		String url = String.format(URL_CREATEBOOKING, loc, vin, accountID);
+		String data = getDataByPrivateURL(url, service, accessToken);
+		try {
+			JSONObject jsonObj = new JSONObject(data);
+			JSONArray jsonArray = new JSONArray(jsonObj.getString(BOOKING));
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				JSONObject jAccount = jsonObject.getJSONObject(ACCOUNT);
+				Account account = new Account(
+						jAccount.getString(ACCOUNT_ID),
+						jAccount.getString(DESCRIPTION));
+				JSONObject jVehicle = jsonObject.getJSONObject(VEHICLE);
+				Position position = getPositionFromJsonObjekt(jVehicle.getJSONObject(POSITION));
+				Vehicle vehicle = new Vehicle(
+						jVehicle.getString(VIN),
+						jVehicle.getString(NUMBER_PLATE),
+						position,
+						jVehicle.getString(EXTERIOR),
+						jVehicle.getString(INTERIOR),
+						jVehicle.getString(FUEL),
+						jVehicle.getString(ENGINE_TYPE));
+				JSONObject jReservationTime = jsonObject.getJSONObject(RESERVATION_TIME);
+				JSONObject jTimeZone = jReservationTime.getJSONObject(TIMEZONE);
+				JSONObject innerJTimeZone = jTimeZone.getJSONObject(TIMEZONE);
+				TimeZone innerTimeZone = new TimeZone(
+						innerJTimeZone.getString(DST_SAVINGS),
+						innerJTimeZone.getString(ID),
+						innerJTimeZone.getString(DISPLAY_NAME),
+						innerJTimeZone.getString(RAW_OFFSET));
+				TimeZone timeZone = new TimeZone(
+						jTimeZone.getString(DST_SAVINGS),
+						jTimeZone.getString(ID),
+						jTimeZone.getBoolean(DIRTY),
+						jTimeZone.getString(DISPLAY_NAME),
+						innerTimeZone,
+						jTimeZone.getString(RAW_OFFSET));
+				ReservationTime reservationTime = new ReservationTime(
+						jReservationTime.getString(FIRST_DAY_OF_WEEK), 
+						jReservationTime.getString(GREGORIAN_CHANGE), 
+						jReservationTime.getBoolean(LENIENT), 
+						jReservationTime.getString(MINIMAL_DAYS_IN_FIRST_WEEK), 
+						jReservationTime.getString(TIME), 
+						jReservationTime.getString(TIME_IN_MILLIS), 
+						timeZone);
+				Position bookingPosition = getPositionFromJsonObjekt(jsonObject.getJSONObject(BOOKING_POSITION));
+				Booking booking = new Booking(
+						account,
+						jsonObject.getString(BOOKING_ID),
+						bookingPosition,
+						vehicle,
+						reservationTime);
+				result.add(booking);
+				Log.d(Endpoint.class.getCanonicalName(), booking.getBookingId());
+				Log.d(Endpoint.class.getCanonicalName(), booking.getReservationTime().getTime());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public CanceledBooking cancelBooking(String bookingID, OAuthService service, Token accessToken) {
