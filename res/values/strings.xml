@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Welcome to Car2Il2k12 App</string>
-    <string name="app_name">Shizzlemybeschizzle</string>
+    <string name="app_name">Car2Il2k2</string>
     <string name="start">Car2Il2k12</string>
     <string name="username">username</string>
     <string name="password">password</string>
@@ -28,5 +28,9 @@
         <item>@string/middle</item>
         <item>@string/big</item>
     </string-array>
+        <string name="bookings">My Bookings</string>
+        <string name="booking">Buchungen</string>
+        <string name="Continue">Weiter</string>
+        <string name="bookCar">Buche nächstes Fahrzeug</string>
 
 </resources>

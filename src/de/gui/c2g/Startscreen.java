@@ -18,6 +18,7 @@ public class Startscreen extends Activity {
     private final int StadteListeResultId = 3;
     private final int OptionsScreenResultId = 1;
     private final int AnmeldescreenResultId = 0;
+    private final int BuchungenResultId = 2;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,11 @@ public class Startscreen extends Activity {
             	intent = new Intent(this, Anmeldescreen.class);
     			startActivityForResult(intent, AnmeldescreenResultId);
     			break;
-            default:
+			case R.id.item3:
+            	intent = new Intent(this, Bookings.class);
+    			startActivityForResult(intent, BuchungenResultId);
+    			break;
+			default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
@@ -75,7 +80,15 @@ public class Startscreen extends Activity {
                 }
                 break;
         //options
-            case 1: 
+            case OptionsScreenResultId: 
+            	if (resultCode == RESULT_OK){
+            		Toast.makeText(this, "Save successfull", Toast.LENGTH_SHORT).show();
+            	}
+            case StadteListeResultId: 
+            	if (resultCode == RESULT_OK){
+            		Toast.makeText(this, "Save successfull", Toast.LENGTH_SHORT).show();
+            	}
+            case BuchungenResultId: 
             	if (resultCode == RESULT_OK){
             		Toast.makeText(this, "Save successfull", Toast.LENGTH_SHORT).show();
             	}
@@ -87,9 +100,7 @@ public class Startscreen extends Activity {
     public void myHandler(View view) {
 		switch (view.getId()) {
 		case R.id.MapButton:
-			intent = new Intent(this, StadtelisteScreen.class);
-//			intent.putExtra("Login", login);
-//			intent.putExtra("UseGps", useGps);
+			intent = new Intent(this, Map.class);
 			startActivity(intent);
 			break;	
 		}
