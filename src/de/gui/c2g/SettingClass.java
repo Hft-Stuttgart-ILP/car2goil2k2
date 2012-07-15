@@ -1,13 +1,16 @@
 package de.gui.c2g;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import android.content.Context;
+import android.widget.Toast;
 
 public class SettingClass {
 	
@@ -46,7 +49,7 @@ public class SettingClass {
 	public static void SaveSettings(Context ctx){
 		FileOutputStream fOut;
 		try {
-			fOut = ctx.openFileOutput("Settings.txt", Context.MODE_PRIVATE);
+			fOut = ctx.openFileOutput("Settings.txt", Context.MODE_WORLD_WRITEABLE);
 		
 			OutputStreamWriter osw = new OutputStreamWriter(fOut); 
 			osw.write(OutputString());
@@ -64,40 +67,49 @@ public class SettingClass {
 	
 	private static String OutputString() {
 		String s = "";
-		s += getSearchRadius() + "; ";
-		s += getTown() + "; ";
+		s += getSearchRadius() + ";";
+		s += getTown() + ";";
 		if(isUseGps()){
-			s += "true; ";
+			s += "true;";
 		}
 		else{
-			s += "false; ";
+			s += "false;";
 		}
 		return s;
 	}
 	
 	public static void LoadSettings(Context ctx){
-        FileInputStream TheFileInputStream;
         String data="";
         
 		try {
-			TheFileInputStream = ctx.openFileInput("Settings,txt");
-			InputStreamReader TheInputStreamReader = new InputStreamReader(TheFileInputStream);
-			char[] inputBuffer = new char[TheFileInputStream.available()];
-			TheInputStreamReader.read(inputBuffer);
-			data = new String(inputBuffer);
-			TheInputStreamReader.close();
-			TheFileInputStream.close();
-			
+			File f = new File("Settings.txt");
+			if(!f.exists()){
+				InputStream TheFileInputStream = ctx.getResources().openRawResource(R.raw.initialsettings);
+				InputStreamReader TheInputStreamReader = new InputStreamReader(TheFileInputStream);
+				char[] inputBuffer = new char[TheFileInputStream.available()];
+				TheInputStreamReader.read(inputBuffer);
+				data = new String(inputBuffer);
+				TheInputStreamReader.close();
+				TheFileInputStream.close();
+			}
+			else{
+				FileInputStream TheFileInputStream = new FileInputStream(f);
+				InputStreamReader TheInputStreamReader = new InputStreamReader(TheFileInputStream);
+				char[] inputBuffer = new char[TheFileInputStream.available()];
+				TheInputStreamReader.read(inputBuffer);
+				data = new String(inputBuffer);
+				TheInputStreamReader.close();
+				TheFileInputStream.close();
+			}
 		} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+			Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 		
 		setValues(data);
-		
 	}
 	
 	private static void setValues(String data) {
@@ -108,10 +120,12 @@ public class SettingClass {
 			setTown(values[1].replace(";", ""));
 			if(values[2].replace(";", "").equals("true")){
 				setUseGps(true);
+				
 			}
 			else{
 				setUseGps(false);
 			}
+			
 		}
 		
 	}

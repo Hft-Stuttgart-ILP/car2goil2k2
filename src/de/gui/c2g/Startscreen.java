@@ -75,11 +75,6 @@ public class Startscreen extends Activity {
         }
     }
     
-    @Override
-    public void onStop(){
-    	SettingClass.SaveSettings(this);
-    }
-    
     public void myHandler(View view) {
 		switch (view.getId()) {
 		case R.id.MapButton:
