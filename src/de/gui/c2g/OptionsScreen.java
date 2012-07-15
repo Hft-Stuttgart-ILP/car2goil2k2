@@ -3,8 +3,7 @@ package de.gui.c2g;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class OptionsScreen extends Activity {
@@ -16,6 +15,22 @@ public class OptionsScreen extends Activity {
 		super.onCreate(savedInstanceState);
 
 		GpsSpinner = (Spinner) findViewById(R.id.GPSSpinner);
+		String myString = "";
+		if(SettingClass.isUseGps()){
+			myString = "Yes"; //the value you want the position for
+		}
+		else{
+			myString = "No";
+		}
+		
+
+		ArrayAdapter myAdap = (ArrayAdapter) GpsSpinner.getAdapter(); //cast to an ArrayAdapter
+
+		int spinnerPosition = myAdap.getPosition(myString);
+
+		//set the default according to value
+		GpsSpinner.setSelection(spinnerPosition);
+
 		
 		setContentView(R.layout.guioptionsscreen);
 	}

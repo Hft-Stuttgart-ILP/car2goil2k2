@@ -14,22 +14,12 @@ public class Startscreen extends Activity {
 
     // private Button button1;
     private Intent intent;
-
-    private final int StadteListeResultId = 3;
-    private final int OptionsScreenResultId = 1;
-    private final int AnmeldescreenResultId = 0;
-    private final int BuchungenResultId = 2;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SettingClass.RestoreValues();
+        SettingClass.LoadSettings(this);
         setContentView(R.layout.main);
-        if(!SettingClass.isHometownSet()){
-		      	Intent aintent = new Intent(this, StadtelisteScreen.class);
-    			startActivityForResult(aintent, StadteListeResultId);
-                //return true;
-    	}
     }
     
 	@Override
@@ -46,19 +36,15 @@ public class Startscreen extends Activity {
         switch (item.getItemId()) {
             case R.id.item1:
             	intent = new Intent(this, OptionsScreen.class);
-    			//startActivityForResult(intent, OptionsScreenResultId);
+    			//startActivityForResult(intent, 1);
             	startActivity(intent);
                 return true;
 //                LoginScreen
             case R.id.item2:
             	intent = new Intent(this, Anmeldescreen.class);
-    			startActivityForResult(intent, AnmeldescreenResultId);
+    			startActivityForResult(intent, 0);
     			break;
-			case R.id.item3:
-            	intent = new Intent(this, Bookings.class);
-    			startActivityForResult(intent, BuchungenResultId);
-    			break;
-			default:
+            default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
@@ -69,7 +55,7 @@ public class Startscreen extends Activity {
         // See which child activity is calling us back.
         switch (requestCode) {
         //login
-            case AnmeldescreenResultId:
+            case 0:
                 // This is the standard resultCode that is sent back if the
                 // activity crashed or didn't doesn't supply an explicit result.
                 if (resultCode == RESULT_OK){
@@ -80,21 +66,18 @@ public class Startscreen extends Activity {
                 }
                 break;
         //options
-            case OptionsScreenResultId: 
-            	if (resultCode == RESULT_OK){
-            		Toast.makeText(this, "Save successfull", Toast.LENGTH_SHORT).show();
-            	}
-            case StadteListeResultId: 
-            	if (resultCode == RESULT_OK){
-            		Toast.makeText(this, "Save successfull", Toast.LENGTH_SHORT).show();
-            	}
-            case BuchungenResultId: 
+            case 1: 
             	if (resultCode == RESULT_OK){
             		Toast.makeText(this, "Save successfull", Toast.LENGTH_SHORT).show();
             	}
             default:
                 break;
         }
+    }
+    
+    @Override
+    public void onStop(){
+    	SettingClass.SaveSettings(this);
     }
     
     public void myHandler(View view) {
