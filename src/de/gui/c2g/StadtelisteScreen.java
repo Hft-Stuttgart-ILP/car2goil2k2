@@ -33,7 +33,6 @@ public class StadtelisteScreen extends Activity implements OnClickListener{
 
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		SettingClass.setHometownSet(true);
 		SettingClass.setTown("Ulm");
 		return;
 	}
