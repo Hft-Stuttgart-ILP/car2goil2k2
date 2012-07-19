@@ -1,6 +1,8 @@
 package de.gui.c2g;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +23,21 @@ public class Startscreen extends Activity {
         super.onCreate(savedInstanceState);
         SettingClass.LoadSettings(this);
         setContentView(R.layout.main);
+        if(SettingClass.isFirstStartUp()){
+        	String message = "Hello and Welcome to the Car2Il2k2 App.\n\nUnder Menu you find options to edit the settings, to login to your Car2Go Account and to view your bookings.\n\nBy clicking Map the mapview is shown.\n\nBy clicking \"Buche nächstes Fahrzeug\" you can book the next free Car.\n\nHope you enjoy.\n\nThe Car2Il2k2-Team";
+        	new AlertDialog.Builder( this )
+        	.setTitle( "Welcome to Car2Il2k2" )
+        	.setMessage(message)
+        	.setPositiveButton( "Ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, just close
+					// the dialog box and do nothing
+					SettingClass.setFirstStartUp(false);
+					dialog.cancel();
+				}
+			})
+        	.show();
+        }
     }
     
 	@Override

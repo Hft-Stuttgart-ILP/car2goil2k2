@@ -18,7 +18,14 @@ public class SettingClass {
 	static sRadius searchRadius = sRadius.small;
 	static String town;
 	static enum sRadius{ small, middle, big}
+	static boolean firstStartUp = true;
 	
+	public static boolean isFirstStartUp() {
+		return firstStartUp;
+	}
+	public static void setFirstStartUp(boolean firstStartUp) {
+		SettingClass.firstStartUp = firstStartUp;
+	}
 	public static boolean isUseGps() {
 		return useGps;
 	}
@@ -67,6 +74,12 @@ public class SettingClass {
 	
 	private static String OutputString() {
 		String s = "";
+		if(isFirstStartUp()){
+			s += "true;";
+		}
+		else{
+			s += "false;";
+		}
 		s += getSearchRadius() + ";";
 		s += getTown() + ";";
 		if(isUseGps()){
@@ -116,9 +129,15 @@ public class SettingClass {
 		
 		if(data.length()>0){
 			String[] values = data.split(";");
-			setSearchRadius(values[0].replace(";", ""));
-			setTown(values[1].replace(";", ""));
-			if(values[2].replace(";", "").equals("true")){
+			if(values[0].replace(";", "").equals("true")){
+				setFirstStartUp(true);
+			}
+			else{
+				setFirstStartUp(false);
+			}
+			setSearchRadius(values[1].replace(";", ""));
+			setTown(values[2].replace(";", ""));
+			if(values[3].replace(";", "").equals("true")){
 				setUseGps(true);
 				
 			}
