@@ -32,7 +32,7 @@ public class OptionsScreen extends Activity {
 		Spinner SearchSpinner = (Spinner) findViewById(R.id.RadiusSpinner);
 		myString = "";
 		if(SettingClass.getSearchRadius().equals(SettingClass.searchRadius.big)){
-			myString = "Big"; //the value you want the position for
+			myString = "Big";
 		}
 		else if(SettingClass.getSearchRadius().equals(SettingClass.searchRadius.middle)){
 			myString = "Middle";
@@ -47,6 +47,7 @@ public class OptionsScreen extends Activity {
 		
 	}
 	
+	// Methode zum Finden der Position auf die Spinner gesetzt werden muss
 	public int setSpinnerSelection(String value, Spinner spinner){
 		
 		for (int i = 0; i < spinner.getCount(); i++) {              
@@ -59,6 +60,7 @@ public class OptionsScreen extends Activity {
 		return 1;
 	}
 
+	// Handler für SaveChanges Button
 	public void SaveChangesButtonOnClick(View view) {
 		switch (view.getId()) {
 		case R.id.SaveChangesButton:
@@ -68,10 +70,8 @@ public class OptionsScreen extends Activity {
 					.equalsIgnoreCase("Yes")){
 				useGps = true;
 			}
+			// Setzen des Wertes ob Gps benutzt werden soll
 			SettingClass.setUseGps(useGps);
-			
-			
-			// TODO: identify item and parse content
 
 			Spinner RadiusSpinner = (Spinner) findViewById(R.id.RadiusSpinner);
 			if (RadiusSpinner.getSelectedItem().toString()
@@ -90,8 +90,10 @@ public class OptionsScreen extends Activity {
 				SettingClass.setSearchRadius(getResources().getString(
 						R.string.small));
 			}
-			setResult(RESULT_OK);
+			//Einstellungen Speichern
 			SettingClass.SaveSettings(this);
+			// Einstellungen gespeichert
+			setResult(RESULT_OK);
 			break;
 		}
 		this.finish();
@@ -101,5 +103,6 @@ public class OptionsScreen extends Activity {
     @Override
     public void onStop(){
     	super.onStop();
+    	SettingClass.SaveSettings(this);
     }
 }

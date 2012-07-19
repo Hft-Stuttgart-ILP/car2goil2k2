@@ -16,6 +16,7 @@ public class Anmeldescreen extends Activity{
         
     }
 	
+	// Handler für Button Zurück
 	public void backClickHandler(View view) {
 		switch (view.getId()) {
 		case R.id.button1:
@@ -24,6 +25,7 @@ public class Anmeldescreen extends Activity{
 		}		
 	}
 	
+	//Handler für Button Login
 	public void LoginButtonClick(View view){
 		switch(view.getId()){
 		case R.id.LoginButton:
