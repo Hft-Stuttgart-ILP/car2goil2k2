@@ -24,6 +24,7 @@ public class Startscreen extends Activity {
         SettingClass.LoadSettings(this);
         setContentView(R.layout.main);
         if(SettingClass.isFirstStartUp()){
+        	// Show Dialog on first startup
         	String message = "Hello and Welcome to the Car2Il2k2 App.\n\nUnder Menu you find options to edit the settings, to login to your Car2Go Account and to view your bookings.\n\nBy clicking Map the mapview is shown.\n\nBy clicking \"Buche nächstes Fahrzeug\" you can book the next free Car.\n\nHope you enjoy.\n\nThe Car2Il2k2-Team";
         	new AlertDialog.Builder( this )
         	.setTitle( "Welcome to Car2Il2k2" )
@@ -74,8 +75,6 @@ public class Startscreen extends Activity {
         switch (requestCode) {
         //login
             case 0:
-                // This is the standard resultCode that is sent back if the
-                // activity crashed or didn't doesn't supply an explicit result.
                 if (resultCode == RESULT_OK){
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
                 } 
