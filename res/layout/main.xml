@@ -4,14 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/hello" />
-
     <Button
         android:id="@+id/MapButton"
         android:layout_width="match_parent"
@@ -21,22 +13,31 @@
         android:layout_marginBottom="16dp"
         android:onClick="myHandler"
         android:text="@string/Map" />
+
+    <Button
+        android:id="@+id/booknextavailablecarbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/MapButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="BookNextAvailableCarButtonClickHandler"
+        android:text="@string/bookCar" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:src="@drawable/logo" />
 
     <AnalogClock
         android:id="@+id/analogClock1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/imageView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="99dp" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/analogClock1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
-        android:text="@string/bookCar" />
+        android:layout_marginTop="40dp" />
 
 </RelativeLayout>

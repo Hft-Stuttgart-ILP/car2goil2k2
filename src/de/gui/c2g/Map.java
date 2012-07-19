@@ -9,6 +9,7 @@ public class Map extends Activity{
 	private boolean useGps = true;
 	private boolean login = false;
 	
+	//Ersetzt durch MapView de.age.car2giol2k2.Car2Go.class (-->Flex|Alex)
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
