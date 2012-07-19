@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import de.age.car2goil2k2.Car2Go;
 
 public class Startscreen extends Activity {
     /** Called when the activity is first created. */    
@@ -78,7 +79,7 @@ public class Startscreen extends Activity {
     public void myHandler(View view) {
 		switch (view.getId()) {
 		case R.id.MapButton:
-			intent = new Intent(this, Map.class);
+			intent = new Intent(this, Car2Go.class);
 //			intent.putExtra("Login", login);
 //			intent.putExtra("UseGps", useGps);
 			startActivity(intent);
