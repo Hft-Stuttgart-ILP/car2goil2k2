@@ -15,6 +15,7 @@ import c2G.mobile.api.objekts.Location;
 
 public class StadtelisteScreen extends Activity implements OnClickListener{
 	
+	// NICHT IMPLEMENTIERT...evtl noch einbauen?
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

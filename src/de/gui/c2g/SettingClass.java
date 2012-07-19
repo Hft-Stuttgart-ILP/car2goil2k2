@@ -14,10 +14,16 @@ import android.widget.Toast;
 
 public class SettingClass {
 	
+	// wird gps benutzt
 	static boolean useGps = false;
+	// suchradius für fahrzeuge
 	static sRadius searchRadius = sRadius.small;
+	// Stadt
 	static String town;
+	
 	static enum sRadius{ small, middle, big}
+	
+	// ist anwendung zum ersten mal gestartet
 	static boolean firstStartUp = true;
 	
 	public static boolean isFirstStartUp() {
@@ -53,13 +59,15 @@ public class SettingClass {
 		SettingClass.town = town;
 	}
 	
+	// Einstellungen speichern in text datei
 	public static void SaveSettings(Context ctx){
 		FileOutputStream fOut;
 		try {
 			fOut = ctx.openFileOutput("Settings.txt", Context.MODE_WORLD_WRITEABLE);
-		
 			OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+			// erstellen des Strings
 			osw.write(OutputString());
+			// Schreiben der Datei
 			osw.flush();
 			osw.close();
 			} 
@@ -72,6 +80,7 @@ public class SettingClass {
 		}
 	}
 	
+	// erstellen eines Strings der in Datei geschrieben werden soll
 	private static String OutputString() {
 		String s = "";
 		if(isFirstStartUp()){
@@ -91,11 +100,13 @@ public class SettingClass {
 		return s;
 	}
 	
+	// Laden der Einstellungen aus TextDatei
 	public static void LoadSettings(Context ctx){
         String data="";
         
 		try {
 			File f = new File("Settings.txt");
+			// Lädt initiale Einstellungen aus res/raw/initialsettings.txt
 			if(!f.exists()){
 				InputStream TheFileInputStream = ctx.getResources().openRawResource(R.raw.initialsettings);
 				InputStreamReader TheInputStreamReader = new InputStreamReader(TheFileInputStream);
@@ -105,6 +116,7 @@ public class SettingClass {
 				TheInputStreamReader.close();
 				TheFileInputStream.close();
 			}
+			// lädt Einstellungen aus auf gerät gespeicherter Datei
 			else{
 				FileInputStream TheFileInputStream = new FileInputStream(f);
 				InputStreamReader TheInputStreamReader = new InputStreamReader(TheFileInputStream);
@@ -123,8 +135,9 @@ public class SettingClass {
 		}
 		
 		setValues(data);
-	}
+	}	
 	
+	// Setzen der Variablen aus InputStream
 	private static void setValues(String data) {
 		
 		if(data.length()>0){
